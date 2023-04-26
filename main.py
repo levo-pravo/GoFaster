@@ -65,7 +65,8 @@ class Enemy(GameSprite):
             elif self.speed_y < 0:
                 self.rect.y -= self.speed_y
         elif enemy_type == 'line_enemy':
-            ...
+            self.rect.x += self.speed_x
+            self.rect.y += self.speed_y
 
 #setup
 with open('score.txt', 'r', encoding='utf-8') as file:
@@ -75,6 +76,8 @@ last_time = timer()
 new_time = timer()
 x = [2, 2, 2, -3, -4, -3]
 y = [1, 2, 4, -4, -1, -3]
+lx = [7, 7, 0, 7, 0, 0]
+ly = [0, 0, 7, 0, 7, 7]
 
 window = display.set_mode((1920, 1020))
 display.set_caption('GoFaster!')
@@ -86,12 +89,15 @@ player = Player('player.png', 910, 490, 10, None)
 killer = Enemy('killer.png', 910, 490, 2, None)
 
 enemies = sprite.Group()
-for i in range(1, 6):
+for i in range(0, 6):
     enemy = Enemy('enemy.png', randint(0, 635), 0, x[i], y[i])
     enemies.add(enemy)
 line_enemies = sprite.Group()
-for i in range(1, 6):
-    line_enemy = Enemy('line_enemy.png', randint(0, 635), 0, x[i], y[i])
+for i in range(0, 6):
+    if lx[i] == 0:
+        line_enemy = Enemy('line_enemy.png', randint(0, 1855), -65, lx[i], ly[i])
+    else:
+        line_enemy = Enemy('line_enemy.png', -65, randint(0, 1015), lx[i], ly[i])     
     line_enemies.add(line_enemy)
 
 font2 = font.Font(None, 36)
@@ -108,9 +114,9 @@ while True:
     killer.update('killer')
     killer.reset()
 
-    enemies.update('enemy9999999999')
+    enemies.update('enemy')
     enemies.draw(window)
-    line_enemies.update('killer')
+    line_enemies.update('line_enemy')
     line_enemies.draw(window)
 
     player.update()
