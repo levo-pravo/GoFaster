@@ -43,6 +43,13 @@ class Player(GameSprite):
         new_time = timer()
         if (new_time - last_time) >= 1:
             score += 1
+    def kill_player(self):
+        if sprite.collide_rect(self, killer):
+            return True
+        if sprite.spritecollide(self, enemies, False):
+            return True
+        if sprite.spritecollide(self, line_enemies, False):
+            return True
 
 class Enemy(GameSprite):
     def update(self, enemy_type):
@@ -86,7 +93,7 @@ clock = time.Clock()
 background = transform.scale(image.load('background.png'), (1920, 1080))
 
 player = Player('player.png', 910, 490, 10, None)
-killer = Enemy('killer.png', 910, 490, 2, None)
+killer = Enemy('killer.png', 710, 490, 2, None)
 
 enemies = sprite.Group()
 for i in range(0, 6):
@@ -122,6 +129,8 @@ while True:
     player.update()
     player.reset()
     player.update_score()
+    if player.kill_player():
+        break
     
     display.update()
     clock.tick(60)
