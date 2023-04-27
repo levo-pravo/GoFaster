@@ -84,8 +84,8 @@ with open('score.txt', 'r', encoding='utf-8') as file:
 flag_for_score = True #данный флаг показывает, надо ли обнулять ласт тайм
 last_time = timer()
 new_time = timer()
-x = [randint(1, 6), randint(1, 6), randint(1, 6), randint(1, 6), randint(1, 6), randint(1, 6)]
-y = [randint(1, 6), randint(1, 6), randint(1, 6), randint(1, 6), randint(1, 6), randint(1, 6)]
+x = [randint(1, 3), randint(1, 3), randint(1, 3), randint(1, 3), randint(1, 3), randint(1, 3)]
+y = [randint(1, 3), randint(1, 3), randint(1, 3), randint(1, 3), randint(1, 3), randint(1, 3)]
 lx = [7, 7, 0, 7, 0, 0]
 ly = [0, 0, 7, 0, 7, 7]
 
@@ -105,9 +105,9 @@ for i in range(0, 6):
 line_enemies = sprite.Group()
 for i in range(0, 6):
     if lx[i] == 0:
-        line_enemy = Enemy('line_enemy.png', randint(0, 1855), -65, lx[i], ly[i])
+        line_enemy = Enemy('line_enemy.png', randint(0, 1820), -100, lx[i], ly[i])
     else:
-        line_enemy = Enemy('line_enemy.png', -65, randint(0, 1015), lx[i], ly[i])     
+        line_enemy = Enemy('line_enemy.png', -100, randint(0, 980), lx[i], ly[i])     
     line_enemies.add(line_enemy)
 
 font2 = font.Font(None, 36)
