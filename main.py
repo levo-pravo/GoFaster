@@ -14,6 +14,7 @@ class GameSprite(sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x = player_x
         self.rect.y = player_y
+        self.new = True
 
     def reset(self):
         window.blit(self.image, (self.rect.x, self.rect.y))
@@ -50,6 +51,11 @@ class Player(GameSprite):
             return True
         if sprite.spritecollide(self, line_enemies, False):
             return True
+    def goal(self):
+        global goals
+        if sprite.collide_rect(self, goal):
+            goal.new = True
+            goals += 1
 
 class Enemy(GameSprite):
     def update(self, enemy_type):
@@ -78,14 +84,23 @@ class Enemy(GameSprite):
             self.rect.x = 1920 - self.rect.x
             self.rect.y = 1080 - self.rect.y
 
+class Goal(GameSprite):
+    def update(self):
+        if self.new == True:
+            self.new = False
+            self.rect.x = randint(0, 1820)
+            self.rect.y = randint(0, 920)
+
 #setup
 with open('score.txt', 'r', encoding='utf-8') as file:
     score = int(file.read())
+with open('goal.txt', 'r', encoding='utf-8') as file:
+    goals = int(file.read())
 flag_for_score = True #данный флаг показывает, надо ли обнулять ласт тайм
 last_time = timer()
 new_time = timer()
-x = [randint(1, 6), randint(1, 6), randint(1, 6), randint(1, 6), randint(1, 6), randint(1, 6)]
-y = [randint(1, 6), randint(1, 6), randint(1, 6), randint(1, 6), randint(1, 6), randint(1, 6)]
+x = [randint(1, 3), randint(1, 3), randint(1, 3), randint(1, 3), randint(1, 3), randint(1, 3)]
+y = [randint(1, 3), randint(1, 3), randint(1, 3), randint(1, 3), randint(1, 3), randint(1, 3)]
 lx = [7, 7, 0, 7, 0, 0]
 ly = [0, 0, 7, 0, 7, 7]
 
@@ -97,6 +112,7 @@ background = transform.scale(image.load('background.png'), (1920, 1080))
 
 player = Player('player.png', 910, 490, 10, None)
 killer = Enemy('killer.png', 710, 490, 2, None)
+goal = Goal('goal.png', randint(0, 1820), randint(0, 980), None, None)
 
 enemies = sprite.Group()
 for i in range(0, 6):
@@ -105,9 +121,9 @@ for i in range(0, 6):
 line_enemies = sprite.Group()
 for i in range(0, 6):
     if lx[i] == 0:
-        line_enemy = Enemy('line_enemy.png', randint(0, 1855), -65, lx[i], ly[i])
+        line_enemy = Enemy('line_enemy.png', randint(0, 1820), -100, lx[i], ly[i])
     else:
-        line_enemy = Enemy('line_enemy.png', -65, randint(0, 1015), lx[i], ly[i])     
+        line_enemy = Enemy('line_enemy.png', -100, randint(0, 920), lx[i], ly[i])     
     line_enemies.add(line_enemy)
 
 font2 = font.Font(None, 36)
@@ -118,8 +134,10 @@ while True:
             sys.exit()
 
     window.blit(background, (0, 0))
-    text_score = font2.render('Счёт: ' + str(score), 1, (255, 255, 255))
+    text_score = font2.render('Время: ' + str(score), 1, (255, 255, 255))
     window.blit(text_score, (100, 300))
+    text_score = font2.render('Счёт: ' + str(goals), 1, (255, 255, 255))
+    window.blit(text_score, (100, 350))
 
     killer.update('killer')
     killer.reset()
@@ -129,6 +147,10 @@ while True:
     line_enemies.update('line_enemy')
     line_enemies.draw(window)
 
+    goal.update()
+    goal.reset()
+
+    player.goal()
     player.update()
     player.reset()
     player.update_score()
@@ -140,3 +162,5 @@ while True:
 
     with open('score.txt', 'w', encoding='utf-8') as file:
         file.write(str(score))
+    with open('goal.txt', 'w', encoding='utf-8') as file:
+        file.write(str(goals))
