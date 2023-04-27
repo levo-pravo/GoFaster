@@ -42,8 +42,9 @@ class Player(GameSprite):
             last_time = timer()
             flag_for_score = False
         new_time = timer()
-        if (new_time - last_time) >= 1:
+        if (new_time - last_time) >= 1 and flag_for_score == False:
             score += 1
+            flag_for_score = True
     def kill_player(self):
         if sprite.collide_rect(self, killer):
             return True
