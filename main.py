@@ -14,6 +14,8 @@ class GameSprite(sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x = player_x
         self.rect.y = player_y
+        self.start_x = self.rect.x
+        self.start_y = self.rect.y
 
     def reset(self):
         window.blit(self.image, (self.rect.x, self.rect.y))
@@ -74,6 +76,9 @@ class Enemy(GameSprite):
         elif enemy_type == 'line_enemy':
             self.rect.x += self.speed_x
             self.rect.y += self.speed_y
+        if self.rect.x >= 1920 or self.rect.y >= 1080:
+            self.rect.x = self.start_x
+            self.rect.y = self.start_y
 
 #setup
 with open('score.txt', 'r', encoding='utf-8') as file:
