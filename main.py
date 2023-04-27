@@ -14,8 +14,6 @@ class GameSprite(sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x = player_x
         self.rect.y = player_y
-        self.start_x = self.rect.x
-        self.start_y = self.rect.y
 
     def reset(self):
         window.blit(self.image, (self.rect.x, self.rect.y))
@@ -26,13 +24,13 @@ class Player(GameSprite):
         self.flag_for_score = True
     def update(self):
         keys_pressed = key.get_pressed()
-        if keys_pressed[K_a] or keys_pressed[K_LEFT]:
+        if (keys_pressed[K_a] or keys_pressed[K_LEFT]) and self.rect.x >= 0:
             self.rect.x -= self.speed
-        if keys_pressed[K_d] or keys_pressed[K_RIGHT]:
+        if (keys_pressed[K_d] or keys_pressed[K_RIGHT]) and self.rect.x <= 1820:
             self.rect.x += self.speed
-        if keys_pressed[K_w] or keys_pressed[K_UP]:
+        if (keys_pressed[K_w] or keys_pressed[K_UP]) and self.rect.y >= 0:
             self.rect.y -= self.speed
-        if keys_pressed[K_s] or keys_pressed[K_DOWN]:
+        if (keys_pressed[K_s] or keys_pressed[K_DOWN]) and self.rect.y <= 980:
             self.rect.y += self.speed
     def update_score(self):
         global score
@@ -77,8 +75,8 @@ class Enemy(GameSprite):
             self.rect.x += self.speed_x
             self.rect.y += self.speed_y
         if self.rect.x >= 1920 or self.rect.y >= 1080:
-            self.rect.x = self.start_x
-            self.rect.y = self.start_y
+            self.rect.x = 1920 - self.rect.x
+            self.rect.y = 1080 - self.rect.y
 
 #setup
 with open('score.txt', 'r', encoding='utf-8') as file:
@@ -86,12 +84,12 @@ with open('score.txt', 'r', encoding='utf-8') as file:
 flag_for_score = True #данный флаг показывает, надо ли обнулять ласт тайм
 last_time = timer()
 new_time = timer()
-x = [2, 2, 2, -3, -4, -3]
-y = [1, 2, 4, -4, -1, -3]
+x = [randint(1, 6), randint(1, 6), randint(1, 6), randint(1, 6), randint(1, 6), randint(1, 6)]
+y = [randint(1, 6), randint(1, 6), randint(1, 6), randint(1, 6), randint(1, 6), randint(1, 6)]
 lx = [7, 7, 0, 7, 0, 0]
 ly = [0, 0, 7, 0, 7, 7]
 
-window = display.set_mode((1920, 1020))
+window = display.set_mode((1920, 1080))
 display.set_caption('GoFaster!')
 display.set_icon(transform.scale(image.load('player.png'), (1920, 1080)))
 clock = time.Clock()
@@ -102,7 +100,7 @@ killer = Enemy('killer.png', 710, 490, 2, None)
 
 enemies = sprite.Group()
 for i in range(0, 6):
-    enemy = Enemy('enemy.png', randint(0, 635), 0, x[i], y[i])
+    enemy = Enemy('enemy.png', randint(0, 960), randint(0, 540), x[i], y[i])
     enemies.add(enemy)
 line_enemies = sprite.Group()
 for i in range(0, 6):
