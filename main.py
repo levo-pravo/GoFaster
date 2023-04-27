@@ -135,10 +135,6 @@ while True:
             sys.exit()
 
     window.blit(background, (0, 0))
-    text_score = font2.render('Время: ' + str(score), 1, (255, 255, 255))
-    window.blit(text_score, (100, 300))
-    text_score = font2.render('Счёт: ' + str(goals), 1, (255, 255, 255))
-    window.blit(text_score, (100, 350))
 
     killer.update('killer')
     killer.reset()
@@ -157,6 +153,11 @@ while True:
     player.update_score()
     if player.kill_player():
         break
+
+    text_score = font2.render('Время: ' + str(score), 1, (255, 255, 255))
+    window.blit(text_score, (100, 300))
+    text_score = font2.render('Счёт: ' + str(goals), 1, (255, 255, 255))
+    window.blit(text_score, (100, 350))
     
     display.update()
     clock.tick(60)
