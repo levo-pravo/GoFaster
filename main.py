@@ -90,7 +90,7 @@ class Goal(GameSprite):
         if self.new == True:
             self.new = False
             self.rect.x = randint(0, 1820)
-            self.rect.y = randint(0, 920)
+            self.rect.y = randint(0, 980)
 
 #setup
 with open('score.txt', 'r', encoding='utf-8') as file:
@@ -104,15 +104,17 @@ x = [randint(1, 3), randint(1, 3), randint(1, 3), randint(1, 3), randint(1, 3), 
 y = [randint(1, 3), randint(1, 3), randint(1, 3), randint(1, 3), randint(1, 3), randint(1, 3)]
 lx = [7, 7, 0, 7, 0, 0]
 ly = [0, 0, 7, 0, 7, 7]
+last_time_for_background = timer()
 
 window = display.set_mode((1920, 1080))
 display.set_caption('GoFaster!')
 display.set_icon(transform.scale(image.load('player.png'), (1920, 1080)))
 clock = time.Clock()
+new_background = transform.scale(image.load('new_background.png'), (1920, 1080))
 background = transform.scale(image.load('background.png'), (1920, 1080))
 
-player = Player('player.png', 910, 490, 10, None)
-killer = Enemy('killer.png', 710, 490, 2, None)
+player = Player('player.png', 1820, 980, 10, None)
+killer = Enemy('killer.png', 0, 0, 2, None)
 goal = Goal('goal.png', randint(0, 1820), randint(0, 980), None, None)
 
 enemies = sprite.Group()
@@ -134,7 +136,10 @@ while True:
         if e.type == QUIT:
             sys.exit()
 
-    window.blit(background, (0, 0))
+    if timer() - last_time_for_background >= 3:
+        window.blit(background, (0, 0))
+    else:
+        window.blit(new_background, (0, 0))
 
     killer.update('killer')
     killer.reset()
