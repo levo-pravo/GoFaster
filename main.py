@@ -1,4 +1,4 @@
-d = 2
+d = 1
 
 import sys
 from time import time as timer
@@ -106,11 +106,8 @@ with open('goal.txt', 'r', encoding='utf-8') as file:
 flag_for_score = True #данный флаг показывает, надо ли обнулять ласт тайм
 last_time = timer()
 new_time = timer()
-x = [randint(1, 3), randint(1, 3), randint(1, 3), randint(1, 3), randint(1, 3), randint(1, 3)]
-y = [randint(1, 3), randint(1, 3), randint(1, 3), randint(1, 3), randint(1, 3), randint(1, 3)]
-lx = [7//d, 7//d, 0, 7//d, 0, 0]
-ly = [0, 0, 7//d, 0, 7//d, 7//d]
-last_time_for_background = timer()
+lx = [7/d, 7/d, 0, 7/d, 0, 0]
+ly = [0, 0, 7/d, 0, 7/d, 7/d]
 
 window = display.set_mode((1920//d, 1080//d))
 display.set_caption('GoFaster!')
@@ -123,11 +120,14 @@ now_goals = 0
 
 player = Player('player.png', 1820//d, 980//d, 10, None)
 killer = Enemy('killer.png', 0, 0, 2, None)
-goal = Goal('goal.png', randint(0, 1820/d), randint(0, 980//d), None, None)
+goal = Goal('goal.png', randint(0, 1820//d), randint(0, 980//d), None, None)
 
 enemies = sprite.Group()
 for i in range(0, 6):
-    enemy = Enemy('enemy.png', randint(0, 960//d), randint(0, 540//d), x[i], y[i])
+    if d > 3:
+        enemy = Enemy('enemy.png', randint(0, 960//d), randint(0, 540//d), 1, 1)
+    else:
+        enemy = Enemy('enemy.png', randint(0, 960//d), randint(0, 540//d), randint(1, 3), randint(1, 3))
     enemies.add(enemy)
 line_enemies = sprite.Group()
 for i in range(0, 6):
@@ -138,11 +138,35 @@ for i in range(0, 6):
     line_enemies.add(line_enemy)
 
 font2 = font.Font(None, 36//d)
+font3 = font.Font(None, 450//d)
+text_play = font3.render('Играть', 1, (0, 255, 0))
+text_width = text_play.get_width()
+text_height = text_play.get_height()
+x_c = []
+for i in range (441//d, text_width+441//d):
+    x_c.append(i)
+y_c = []
+for i in range (0, text_height):
+    y_c.append(i)
 
-'''while True:
-    if e.type == MOUSEBUTTONDOWN:
+x = -1
+y = -1
+
+while True:
+    for e in event.get():
+        if e.type == QUIT:
+            sys.exit()
+        if e.type == MOUSEBUTTONDOWN:
             if e.button == 1:
-                x, y = e.pos()'''
+                x, y = e.pos
+    if x in x_c and y in y_c:
+        break
+    window.blit(background, (0, 0))
+    window.blit(text_play, (441//d, 0))
+    display.update()
+    clock.tick(60)
+
+last_time_for_background = timer()
 
 while True:
     for e in event.get():
