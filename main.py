@@ -1,10 +1,11 @@
 d = 1
 
 import sys
-from time import time as timer
+from time import time as timer, sleep
 from pygame import *
 from random import random, randint
 font.init()
+mixer.init()
 
 class GameSprite(sprite.Sprite):
     def __init__(self, player_image, player_x, player_y, player_speed_x, player_speed_y):
@@ -51,11 +52,11 @@ class Player(GameSprite):
             flag_for_score = True
     def kill_player(self):
         if sprite.collide_rect(self, killer):
-            return True
+            return 1
         if sprite.spritecollide(self, enemies, False):
-            return True
+            return 2
         if sprite.spritecollide(self, line_enemies, False):
-            return True
+            return 3
     def goal(self):
         global goals
         global now_goals
@@ -98,118 +99,148 @@ class Goal(GameSprite):
             self.rect.x = randint(0, 1820//d)
             self.rect.y = randint(0, 980//d)
 
-#setup
-with open('score.txt', 'r', encoding='utf-8') as file:
-    score = int(file.read())
-with open('goal.txt', 'r', encoding='utf-8') as file:
-    goals = int(file.read())
-flag_for_score = True #данный флаг показывает, надо ли обнулять ласт тайм
-last_time = timer()
-new_time = timer()
-lx = [7/d, 7/d, 0, 7/d, 0, 0]
-ly = [0, 0, 7/d, 0, 7/d, 7/d]
-
-window = display.set_mode((1920//d, 1080//d))
-display.set_caption('GoFaster!')
-display.set_icon(transform.scale(image.load('player.png'), (1920//d, 1080//d)))
-clock = time.Clock()
-new_background = transform.scale(image.load('new_background.png'), (1920//d, 1080//d))
-background = transform.scale(image.load('background.png'), (1920//d, 1080//d))
-now_score = 0
-now_goals = 0
-
-player = Player('player.png', 1820//d, 980//d, 10, None)
-killer = Enemy('killer.png', 0, 0, 2, None)
-goal = Goal('goal.png', randint(0, 1820//d), randint(0, 980//d), None, None)
-
-enemies = sprite.Group()
-for i in range(0, 6):
-    if d > 3:
-        enemy = Enemy('enemy.png', randint(0, 960//d), randint(0, 540//d), 1, 1)
-    else:
-        enemy = Enemy('enemy.png', randint(0, 960//d), randint(0, 540//d), randint(1, 3), randint(1, 3))
-    enemies.add(enemy)
-line_enemies = sprite.Group()
-for i in range(0, 6):
-    if lx[i] == 0:
-        line_enemy = Enemy('line_enemy.png', randint(0, 1820//d), -100//d, lx[i], ly[i])
-    else:
-        line_enemy = Enemy('line_enemy.png', -100//d, randint(0, 920//d), lx[i], ly[i])     
-    line_enemies.add(line_enemy)
-
-font2 = font.Font(None, 36//d)
-font3 = font.Font(None, 450//d)
-text_play = font3.render('Играть', 1, (0, 255, 0))
-text_width = text_play.get_width()
-text_height = text_play.get_height()
-x_c = []
-for i in range (441//d, text_width+441//d):
-    x_c.append(i)
-y_c = []
-for i in range (0, text_height):
-    y_c.append(i)
-
-x = -1
-y = -1
-
 while True:
-    for e in event.get():
-        if e.type == QUIT:
-            sys.exit()
-        if e.type == MOUSEBUTTONDOWN:
-            if e.button == 1:
-                x, y = e.pos
-    if x in x_c and y in y_c:
-        break
-    window.blit(background, (0, 0))
-    window.blit(text_play, (441//d, 0))
-    display.update()
-    clock.tick(60)
+    #setup
+    sound = mixer.Sound("music.ogg")
+    looser = mixer.Sound("looser.ogg")
+    with open('score.txt', 'r', encoding='utf-8') as file:
+        score = int(file.read())
+    with open('goal.txt', 'r', encoding='utf-8') as file:
+        goals = int(file.read())
+    flag_for_score = True #данный флаг показывает, надо ли обнулять ласт тайм
+    last_time = timer()
+    new_time = timer()
+    lx = [7/d, 7/d, 0, 7/d, 0, 0]
+    ly = [0, 0, 7/d, 0, 7/d, 7/d]
 
-last_time_for_background = timer()
+    window = display.set_mode((1920//d, 1080//d))
+    display.set_caption('GoFaster!')
+    display.set_icon(transform.scale(image.load('player.png'), (1920//d, 1080//d)))
+    clock = time.Clock()
+    new_background = transform.scale(image.load('new_background.png'), (1920//d, 1080//d))
+    background = transform.scale(image.load('background.png'), (1920//d, 1080//d))
+    now_score = 0
+    now_goals = 0
 
-while True:
-    for e in event.get():
-        if e.type == QUIT:
-            sys.exit()
+    player = Player('player.png', 1820//d, 980//d, 10, None)
+    killer = Enemy('killer.png', 0, 0, 2, None)
+    goal = Goal('goal.png', randint(0, 1820//d), randint(0, 980//d), None, None)
 
-    if timer() - last_time_for_background >= 3:
+    enemies = sprite.Group()
+    for i in range(0, 6):
+        if d > 3:
+            enemy = Enemy('enemy.png', randint(0, 960//d), randint(0, 540//d), 1, 1)
+        else:
+            enemy = Enemy('enemy.png', randint(0, 960//d), randint(0, 540//d), randint(1, 3), randint(1, 3))
+        enemies.add(enemy)
+    line_enemies = sprite.Group()
+    for i in range(0, 6):
+        if lx[i] == 0:
+            line_enemy = Enemy('line_enemy.png', randint(0, 1820//d), -100//d, lx[i], ly[i])
+        else:
+            line_enemy = Enemy('line_enemy.png', -100//d, randint(0, 920//d), lx[i], ly[i])     
+        line_enemies.add(line_enemy)
+
+    font2 = font.Font(None, 36//d)
+    font3 = font.Font(None, 450//d)
+    text_play = font3.render('Играть', 1, (0, 255, 0))
+    text_width = text_play.get_width()
+    text_height = text_play.get_height()
+    x_c = []
+    for i in range (441//d, text_width+441//d):
+        x_c.append(i)
+    y_c = []
+    for i in range (0, text_height):
+        y_c.append(i)
+
+    x = -1
+    y = -1
+    while True:
+        for e in event.get():
+            if e.type == QUIT:
+                sys.exit()
+            if e.type == MOUSEBUTTONDOWN:
+                if e.button == 1:
+                    x, y = e.pos
+        if x in x_c and y in y_c:
+            break
         window.blit(background, (0, 0))
-    else:
-        window.blit(new_background, (0, 0))
+        window.blit(text_play, (441//d, 0))
+        display.update()
+        clock.tick(60)
 
-    killer.update('killer')
-    killer.reset()
+    last_time_for_background = timer()
+    last_time_for_sound = timer()
+    sound.play()
 
-    enemies.update('enemy')
-    enemies.draw(window)
-    line_enemies.update('line_enemy')
-    line_enemies.draw(window)
+    while True:
+        for e in event.get():
+            if e.type == QUIT:
+                sys.exit()
 
-    goal.update()
-    goal.reset()
+        if timer() - last_time_for_background >= 3:
+            window.blit(background, (0, 0))
+        else:
+            window.blit(new_background, (0, 0))
 
-    player.goal()
-    player.update()
-    player.reset()
-    player.update_score()
-    if player.kill_player():
-        break
+        if timer() - last_time_for_sound >= 20:
+            last_time_for_sound = timer()
+            sound.play()
 
-    text_score = font2.render('Общ. время: ' + str(score), 1, (255, 255, 255))
-    window.blit(text_score, (100//d, 300//d))
-    text_score = font2.render('Общ. счёт: ' + str(goals), 1, (255, 255, 255))
-    window.blit(text_score, (100//d, 350//d))
+        killer.update('killer')
+        killer.reset()
 
-    text_now_score = font2.render('Время: ' + str(now_score), 1, (255, 255, 255))
-    window.blit(text_now_score, (100//d, 400//d))
-    text_now_score = font2.render('Счёт: ' + str(now_goals), 1, (255, 255, 255))
-    window.blit(text_now_score, (100//d, 450//d))
-    
-    display.update()
-    clock.tick(60)
+        enemies.update('enemy')
+        enemies.draw(window)
+        line_enemies.update('line_enemy')
+        line_enemies.draw(window)
 
-    with open('score.txt', 'w', encoding='utf-8') as file:
-        file.write(str(score))
-    with open('goal.txt', 'w', encoding='utf-8') as file:
-        file.write(str(goals))
+        goal.update()
+        goal.reset()
+
+        player.goal()
+        player.update()
+        player.reset()
+        player.update_score()
+        if player.kill_player() == 1:
+            player.image = transform.scale(image.load('player1.png'), (100//d, 100//d))
+            player.reset()
+            display.update()
+            sound.stop()
+            looser.play()
+            sleep(3)
+            break
+        if player.kill_player() == 2:
+            player.image = transform.scale(image.load('player2.png'), (100//d, 100//d))
+            player.reset()
+            display.update()
+            sound.stop()
+            looser.play()
+            sleep(3)
+            break
+        if player.kill_player() == 3:
+            player.image = transform.scale(image.load('player3.png'), (100//d, 100//d))
+            player.reset()
+            display.update()
+            sound.stop()
+            looser.play()
+            sleep(3)
+            break
+
+        text_score = font2.render('Общ. время: ' + str(score), 1, (255, 255, 255))
+        window.blit(text_score, (100//d, 300//d))
+        text_score = font2.render('Общ. счёт: ' + str(goals), 1, (255, 255, 255))
+        window.blit(text_score, (100//d, 350//d))
+
+        text_now_score = font2.render('Время: ' + str(now_score), 1, (255, 255, 255))
+        window.blit(text_now_score, (100//d, 400//d))
+        text_now_score = font2.render('Счёт: ' + str(now_goals), 1, (255, 255, 255))
+        window.blit(text_now_score, (100//d, 450//d))
+        
+        display.update()
+        clock.tick(60)
+
+        with open('score.txt', 'w', encoding='utf-8') as file:
+            file.write(str(score))
+        with open('goal.txt', 'w', encoding='utf-8') as file:
+            file.write(str(goals))
