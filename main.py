@@ -107,6 +107,10 @@ while True:
         score = int(file.read())
     with open('goal.txt', 'r', encoding='utf-8') as file:
         goals = int(file.read())
+    with open('record_score.txt', 'r', encoding='utf-8') as file:
+        record_score = int(file.read())
+    with open('record_goal.txt', 'r', encoding='utf-8') as file:
+        record_goals = int(file.read())
     flag_for_score = True #данный флаг показывает, надо ли обнулять ласт тайм
     last_time = timer()
     new_time = timer()
@@ -142,16 +146,29 @@ while True:
         line_enemies.add(line_enemy)
 
     font2 = font.Font(None, 36//d)
+
     font3 = font.Font(None, 450//d)
     text_play = font3.render('Играть', 1, (0, 255, 0))
-    text_width = text_play.get_width()
-    text_height = text_play.get_height()
-    x_c = []
-    for i in range (441//d, text_width+441//d):
-        x_c.append(i)
-    y_c = []
-    for i in range (0, text_height):
-        y_c.append(i)
+    text_width_play = text_play.get_width()
+    text_height_play = text_play.get_height()
+
+    x_c_p = []
+    for i in range (441//d, text_width_play+441//d):
+        x_c_p.append(i)
+    y_c_p = []
+    for i in range (text_height_play):
+        y_c_p.append(i)
+
+    text_help = font3.render('Помощь', 1, (255, 165, 0))
+    text_width_help = text_help.get_width()
+    text_height_help = text_help.get_height()
+
+    x_c_h = []
+    for i in range (370//d, text_width_help+370//d):
+        x_c_h.append(i)
+    y_c_h = []
+    for i in range (800//d, text_height_help+800//d):
+        y_c_h.append(i)
 
     x = -1
     y = -1
@@ -162,10 +179,13 @@ while True:
             if e.type == MOUSEBUTTONDOWN:
                 if e.button == 1:
                     x, y = e.pos
-        if x in x_c and y in y_c:
+        if x in x_c_p and y in y_c_p:
+            break
+        elif x in x_c_h and y in y_c_h:
             break
         window.blit(background, (0, 0))
         window.blit(text_play, (441//d, 0))
+        window.blit(text_help, (370//d, 800//d))
         display.update()
         clock.tick(60)
 
@@ -205,6 +225,14 @@ while True:
         if player.kill_player() == 1:
             player.image = transform.scale(image.load('player1.png'), (100//d, 100//d))
             player.reset()
+            text_score = font2.render('Общ. время: ' + str(score), 1, (255, 255, 255))
+            window.blit(text_score, (100//d, 300//d))
+            text_score = font2.render('Общ. счёт: ' + str(goals), 1, (255, 255, 255))
+            window.blit(text_score, (100//d, 350//d))
+            text_now_score = font2.render('Время: ' + str(now_score), 1, (255, 255, 255))
+            window.blit(text_now_score, (100//d, 400//d))
+            text_now_score = font2.render('Счёт: ' + str(now_goals), 1, (255, 255, 255))
+            window.blit(text_now_score, (100//d, 450//d))
             display.update()
             sound.stop()
             looser.play()
@@ -213,6 +241,14 @@ while True:
         if player.kill_player() == 2:
             player.image = transform.scale(image.load('player2.png'), (100//d, 100//d))
             player.reset()
+            text_score = font2.render('Общ. время: ' + str(score), 1, (255, 255, 255))
+            window.blit(text_score, (100//d, 300//d))
+            text_score = font2.render('Общ. счёт: ' + str(goals), 1, (255, 255, 255))
+            window.blit(text_score, (100//d, 350//d))
+            text_now_score = font2.render('Время: ' + str(now_score), 1, (255, 255, 255))
+            window.blit(text_now_score, (100//d, 400//d))
+            text_now_score = font2.render('Счёт: ' + str(now_goals), 1, (255, 255, 255))
+            window.blit(text_now_score, (100//d, 450//d))
             display.update()
             sound.stop()
             looser.play()
@@ -221,6 +257,14 @@ while True:
         if player.kill_player() == 3:
             player.image = transform.scale(image.load('player3.png'), (100//d, 100//d))
             player.reset()
+            text_score = font2.render('Общ. время: ' + str(score), 1, (255, 255, 255))
+            window.blit(text_score, (100//d, 300//d))
+            text_score = font2.render('Общ. счёт: ' + str(goals), 1, (255, 255, 255))
+            window.blit(text_score, (100//d, 350//d))
+            text_now_score = font2.render('Время: ' + str(now_score), 1, (255, 255, 255))
+            window.blit(text_now_score, (100//d, 400//d))
+            text_now_score = font2.render('Счёт: ' + str(now_goals), 1, (255, 255, 255))
+            window.blit(text_now_score, (100//d, 450//d))
             display.update()
             sound.stop()
             looser.play()
@@ -244,3 +288,9 @@ while True:
             file.write(str(score))
         with open('goal.txt', 'w', encoding='utf-8') as file:
             file.write(str(goals))
+        if now_score > record_score:
+            with open('record_score.txt', 'w', encoding='utf-8') as file:
+                file.write(str(now_score))
+        if now_goals > record_goals:
+            with open('record_goal.txt', 'w', encoding='utf-8') as file:
+                file.write(str(now_goals))
