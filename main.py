@@ -1,4 +1,4 @@
-d = 1.5
+d = 1.6
 
 import sys
 from time import time as timer, sleep
@@ -10,7 +10,7 @@ mixer.init()
 class GameSprite(sprite.Sprite):
     def __init__(self, player_image, player_x, player_y, player_speed_x, player_speed_y):
         super().__init__()
-        self.image = transform.scale(image.load(player_image), (100//d, 100//d))
+        self.image = transform.scale(image.load(player_image), (int(100/d), int(100/d)))
         self.speed_x = player_speed_x
         self.speed_y = player_speed_y
         self.speed = player_speed_x
@@ -119,7 +119,7 @@ def statistic():
         window.blit(text_record_score, (int(100/d), int(500/d)))
     else:
         text_record_score = font2.render('Рекорд время: ' + str(record_score), 1, (255, 255, 255))
-        window.blit(text_record_score, (int(100/d,) int(500/d)))
+        window.blit(text_record_score, (int(100/d), int(500/d)))
     if now_goals > record_goals:
         text_record_goals = font2.render('Рекорд счёт: ' + str(now_goals), 1, (255, 255, 255))
         window.blit(text_record_goals, (int(100/d), int(550/d)))
@@ -163,7 +163,7 @@ while True:
         if d > 3:
             enemy = Enemy('enemy.png', randint(0, int(960/d)), randint(0, int(540/d)), 1, 1)
         else:
-            enemy = Enemy('enemy.png', randint(0, int(960/d)), randint(0, int(540/d)), randint(1, int(3/d)), randint(1, int(3/d))
+            enemy = Enemy('enemy.png', randint(0, int(960/d)), randint(0, int(540/d)), randint(1, 3), randint(1, 3))
         enemies.add(enemy)
     line_enemies = sprite.Group()
     for i in range(0, 6):
@@ -192,7 +192,11 @@ while True:
     text_width_help = text_help.get_width()
     text_height_help = text_help.get_height()
 
+    font5 = font.Font(None, int(100/d))
+
     text_genius = font4.render('Открой Помощь.txt гений', 1, (255, 165, 0))
+
+    text_can = font5.render('Попробуй набить ' + str(int(record_score//10)*10 + 10) + ' времени и ' + str(int(record_goals//10)*10 + 10) + ' счёта', 1, (128, 166, 255))
 
     x_c_h = []
     for i in range (int(370/d), text_width_help+int(370/d)):
@@ -226,13 +230,14 @@ while True:
             break
         elif x in x_c_h and y in y_c_h:
             window.blit(background, (0, 0))
-            window.blit(text_genius, (30, 100))
+            window.blit(text_genius, (int(30/d), int(100/d)))
             display.update()
             sleep(3)
             sys.exit()
         window.blit(background, (0, 0))
-        window.blit(text_play, (441//d, 0))
-        window.blit(text_help, (370//d, 800//d))
+        window.blit(text_play, (int(441/d), 0))
+        window.blit(text_help, (int(370/d), int(800/d)))
+        window.blit(text_can, (int(370/d), int(600/d)))
         statistic()
         display.update()
         clock.tick(60)
@@ -271,7 +276,7 @@ while True:
         player.reset()
         player.update_score()
         if player.kill_player() == 1:
-            player.image = transform.scale(image.load('player1.png'), (100//d, 100//d))
+            player.image = transform.scale(image.load('player1.png'), (int(100/d), int(100/d)))
             player.reset()
             statistic()
             display.update()
@@ -280,7 +285,7 @@ while True:
             sleep(3)
             break
         if player.kill_player() == 2:
-            player.image = transform.scale(image.load('player2.png'), (100//d, 100//d))
+            player.image = transform.scale(image.load('player2.png'), (int(100/d), int(100/d)))
             player.reset()
             statistic()
             display.update()
@@ -289,7 +294,7 @@ while True:
             sleep(3)
             break
         if player.kill_player() == 3:
-            player.image = transform.scale(image.load('player3.png'), (100//d, 100//d))
+            player.image = transform.scale(image.load('player3.png'), (int(100/d), int(100/d)))
             player.reset()
             statistic()
             display.update()
