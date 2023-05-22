@@ -1,4 +1,9 @@
-# GoFaster! ![Player](player.png)
+# GoFaster!
+<image
+  src="player.png"
+  alt="Player Icon"
+  caption="Подпись под картинкой"
+  width=10%>
 ## A game, was made by dude at the age 12
 __Welcome__ to a game called __GoFaster!__
 
