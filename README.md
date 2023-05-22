@@ -5,6 +5,9 @@
   caption="Подпись под картинкой"
   width=10%>
 ## A game, was made by dude at the age 12
+
+![Issues](/bitbucket/issues/:user/:repo)
+
 __Welcome__ to a game called __GoFaster!__
 
 There is only one thing to do here - to dodge evil ones.
