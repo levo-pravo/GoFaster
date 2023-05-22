@@ -1,12 +1,7 @@
 # GoFaster!
-<image
-  src="player.png"
-  alt="Player Icon"
-  caption="Подпись под картинкой"
-  width=10%>
 ## A game, was made by dude at the age 12
 
-![Issues](/bitbucket/issues/:user/:repo)
+![License](https://img.shields.io/github/license/Lev-Kostylev/GoFaster?style=for-the-badge)
 
 __Welcome__ to a game called __GoFaster!__
 
