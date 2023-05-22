@@ -1,4 +1,4 @@
-# GoFaster!
+# GoFaster! ![Player](/root/player.png)
 ## A game, was made by dude at the age 12
 __Welcome__ to a game called __GoFaster!__
 
