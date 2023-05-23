@@ -1,7 +1,7 @@
 # GoFaster!
 ## A game, was made by dude at the age 12
 
-![License](https://img.shields.io/.github-Lev-Kostylev-tokens.json)
+![License](/github/issues/:Lev-Kostylev/:GoFaster)
 
 __Welcome__ to a game called __GoFaster!__
 
