@@ -1,7 +1,13 @@
 # GoFaster!
 ## A game, was made by dude at the age 12
 
-![License](/github/issues/Lev-Kostylev/GoFaster)
+![License](https://img.shields.io/github/license/Lev-Kostylev/GoFaster)
+![Open Issues](https://img.shields.io/github/issues-raw/Lev-Kostylev/GoGaster)
+![Closed Issues](https://img.shields.io/github/issues-closed-raw/Lev-Kostylev/GoFaster)
+![Last Commit](https://img.shields.io/github/last-commit/Lev-Kostylev/GoFaster)
+![Commit Activity per Year](https://img.shields.io/github/commit-activity/y/Lev-Kostylev/GoFaster?label=commit%20activity%20per%20year)
+![Commit Activity per Month](https://img.shields.io/github/commit-activity/m/Lev-Kostylev/GoFaster?label=commit%20activity%20per%20month)
+![Commit Activity per Week](https://img.shields.io/github/commit-activity/w/Lev-Kostylev/GoFaster?label=commit%20activity%20per%20week)
 
 __Welcome__ to a game called __GoFaster!__
 
