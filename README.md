@@ -2,7 +2,7 @@
 ## A game, was made by dude at the age 12
 
 ![License](https://img.shields.io/github/license/Lev-Kostylev/GoFaster)
-![Open Issues](https://img.shields.io/github/issues-raw/Lev-Kostylev/GoGaster)
+![Open Issues](https://img.shields.io/github/issues-raw/Lev-Kostylev/GoFaster)
 ![Closed Issues](https://img.shields.io/github/issues-closed-raw/Lev-Kostylev/GoFaster)
 ![Last Commit](https://img.shields.io/github/last-commit/Lev-Kostylev/GoFaster)
 ![Commit Activity per Year](https://img.shields.io/github/commit-activity/y/Lev-Kostylev/GoFaster?label=commit%20activity%20per%20year)
