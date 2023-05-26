@@ -1,9 +1,10 @@
-d = 1.6
+d = 1
 
 import sys
 from time import time as timer, sleep
 from pygame import *
 from random import random, randint
+import json
 font.init()
 mixer.init()
 
@@ -64,6 +65,8 @@ class Player(GameSprite):
             goal.new = True
             goals += 1
             now_goals += 1
+    '''def set_gamemode(self, file):
+        file'''
 
 class Enemy(GameSprite):
     def update(self, enemy_type):
@@ -107,28 +110,31 @@ def statistic():
     global text_record_score
     global text_record_goals
     text_score = font2.render('Общ. время: ' + str(score), 1, (255, 255, 255))
-    window.blit(text_score, (int(100/d), int(300//d)))
+    window.blit(text_score, (int(10/d), int(150//d)))
     text_goals = font2.render('Общ. счёт: ' + str(goals), 1, (255, 255, 255))
-    window.blit(text_goals, (int(100/d), int(350/d)))
+    window.blit(text_goals, (int(10/d), int(200/d)))
     text_now_score = font2.render('Время: ' + str(now_score), 1, (255, 255, 255))
-    window.blit(text_now_score, (int(100/d), int(400/d)))
+    window.blit(text_now_score, (int(10/d), int(250/d)))
     text_now_goals = font2.render('Счёт: ' + str(now_goals), 1, (255, 255, 255))
-    window.blit(text_now_goals, (int(100/d), int(450/d)))
+    window.blit(text_now_goals, (int(10/d), int(300/d)))
     if now_score > record_score:
         text_record_score = font2.render('Рекорд время: ' + str(now_score), 1, (255, 255, 255))
-        window.blit(text_record_score, (int(100/d), int(500/d)))
+        window.blit(text_record_score, (int(10/d), int(350/d)))
     else:
         text_record_score = font2.render('Рекорд время: ' + str(record_score), 1, (255, 255, 255))
-        window.blit(text_record_score, (int(100/d), int(500/d)))
+        window.blit(text_record_score, (int(10/d), int(350/d)))
     if now_goals > record_goals:
         text_record_goals = font2.render('Рекорд счёт: ' + str(now_goals), 1, (255, 255, 255))
-        window.blit(text_record_goals, (int(100/d), int(550/d)))
+        window.blit(text_record_goals, (int(10/d), int(400/d)))
     else:
         text_record_goals = font2.render('Рекорд счёт: ' + str(record_goals), 1, (255, 255, 255))
-        window.blit(text_record_goals, (int(100/d), int(550/d)))
+        window.blit(text_record_goals, (int(10/d), int(400/d)))
 
 while True:
     #setup
+    with open('gamemode.json', 'r', encoding='utf-8') as file:
+        gamemode = json.load(file)
+        print(gamemode)
     sound = mixer.Sound("music.ogg")
     looser = mixer.Sound("looser.ogg")
     with open('score.txt', 'r', encoding='utf-8') as file:
@@ -238,7 +244,8 @@ while True:
         window.blit(text_play, (int(441/d), 0))
         window.blit(text_help, (int(370/d), int(800/d)))
         window.blit(text_can, (int(370/d), int(600/d)))
-        statistic()
+        if gamemode['statistic'] == 1:
+            statistic()
         display.update()
         clock.tick(60)
 
@@ -278,7 +285,8 @@ while True:
         if player.kill_player() == 1:
             player.image = transform.scale(image.load('player1.png'), (int(100/d), int(100/d)))
             player.reset()
-            statistic()
+            if gamemode['statistic'] == 1:
+                statistic()
             display.update()
             sound.stop()
             looser.play()
@@ -287,7 +295,8 @@ while True:
         if player.kill_player() == 2:
             player.image = transform.scale(image.load('player2.png'), (int(100/d), int(100/d)))
             player.reset()
-            statistic()
+            if gamemode['statistic'] == 1:
+                statistic()
             display.update()
             sound.stop()
             looser.play()
@@ -296,14 +305,16 @@ while True:
         if player.kill_player() == 3:
             player.image = transform.scale(image.load('player3.png'), (int(100/d), int(100/d)))
             player.reset()
-            statistic()
+            if gamemode['statistic'] == 1:
+                statistic()
             display.update()
             sound.stop()
             looser.play()
             sleep(3)
             break
 
-        statistic()
+        if gamemode['statistic'] == 1:
+            statistic()
         
         display.update()
         clock.tick(60)
