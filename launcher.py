@@ -1,7 +1,8 @@
-d = 1
+d = 1.6
 
 import sys
 import os
+import json
 from time import time as timer, sleep
 from pygame import *
 from random import random, randint
@@ -26,6 +27,8 @@ def statistic():
 
 
 #setup
+with open('gamemode.json', 'r', encoding='utf-8') as file:
+    gamemode = json.load(file)
 music_for_usual = mixer.Sound("music.ogg")
 with open('score.txt', 'r', encoding='utf-8') as file:
     score = int(file.read())
@@ -42,9 +45,9 @@ display.set_icon(transform.scale(image.load('player.png'), (int(1920/d), int(108
 clock = time.Clock()
 background = transform.scale(image.load('background.png'), (int(1920/d), int(1080/d)))
 
-font2 = font.Font(None, int(36/d))
+font2 = font.SysFont('calibri', int(36/d))
 
-font3 = font.Font(None, int(80/d))
+font3 = font.SysFont('calibri', int(80/d))
 text_play_usual = font3.render('Обычный режим', 1, (100, 255, 100))
 text_width_play_usual = text_play_usual.get_width()
 text_height_play_usual = text_play_usual.get_height()
@@ -102,27 +105,43 @@ while True:
     else:
         text_play_usual = font3.render('Обычный режим', 1, (100, 255, 100))
     if x in x_c_p_s and y in y_c_p_s and s_a == 0:
-        text_play_statistic = font3.render('Статистика', 1, (0, 255, 0))
-        s_a = 1
-    if x in x_c_p_s and y in y_c_p_s and s_a == 1:
         text_play_statistic = font3.render('Статистика', 1, (255, 0, 0))
+        s_a = 1
+        x = -1
+        y = -1
+        gamemode['statistic'] = 0
+    elif x in x_c_p_s and y in y_c_p_s and s_a == 1:
+        text_play_statistic = font3.render('Статистика', 1, (0, 255, 0))
         s_a = 0
+        x = -1
+        y = -1
+        gamemode['statistic'] = 1
     if x_n in x_c_p and y_n in y_c_p:
         text_play = font3.render('Играть!', 1, (255, 255, 255))
     else:
         text_play = font3.render('Играть!', 1, (255, 165, 0))
     if x in x_c_p_u and y in y_c_p_u:
+        gamemode = {"health": 0, "statistic": 1}
+        with open('gamemode.json', 'w', encoding='utf-8') as file:
+            file.write(json.dumps(gamemode))
         music_for_usual.stop()
         window.blit(background, (0, 0))
         text_play_usual = font3.render('Игра загружается', 1, (0, 255, 0))
         window.blit(text_play_usual, (int(441/d), 0))
-        text_play = font3.render('Меня опять не использовали(...', 1, (255, 165, 0))
-        window.blit(text_play, (int(370/d), int(800/d)))
         statistic()
         display.update()
         os.system('main.exe')
         break
     elif x in x_c_p and y in y_c_p:
+        with open('gamemode.json', 'w', encoding='utf-8') as file:
+            file.write(json.dumps(gamemode))
+        music_for_usual.stop()
+        window.blit(background, (0, 0))
+        text_play_usual = font3.render('Игра загружается', 1, (0, 255, 0))
+        window.blit(text_play_usual, (int(441/d), 0))
+        statistic()
+        display.update()
+        os.system('main.exe')
         break
     if timer() - t_m_u >= 20:
         t_m_u = timer()
@@ -132,5 +151,7 @@ while True:
     window.blit(text_play_statistic, (int(441/d), int(100/d)))
     window.blit(text_play, (int(370/d), int(800/d)))
     statistic()
+    with open('gamemode.json', 'w', encoding='utf-8') as file:
+        file.write(json.dumps(gamemode))
     display.update()
     clock.tick(60)

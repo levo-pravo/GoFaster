@@ -1,4 +1,4 @@
-d = 1
+d = 1.6
 
 import sys
 from time import time as timer, sleep
@@ -7,6 +7,8 @@ from random import random, randint
 import json
 font.init()
 mixer.init()
+
+print(font.get_fonts())
 
 class GameSprite(sprite.Sprite):
     def __init__(self, player_image, player_x, player_y, player_speed_x, player_speed_y):
@@ -134,7 +136,6 @@ while True:
     #setup
     with open('gamemode.json', 'r', encoding='utf-8') as file:
         gamemode = json.load(file)
-        print(gamemode)
     sound = mixer.Sound("music.ogg")
     looser = mixer.Sound("looser.ogg")
     with open('score.txt', 'r', encoding='utf-8') as file:
@@ -179,13 +180,13 @@ while True:
             line_enemy = Enemy('line_enemy.png', int(-100/d), randint(0, int(920/d)), lx[i], ly[i])     
         line_enemies.add(line_enemy)
 
-    font2 = font.Font(None, int(36/d))
+    font2 = font.SysFont('calibri', int(30/d))
 
-    font3 = font.Font(None, int(450/d))
+    font3 = font.SysFont('calibri', int(300/d))
     text_play = font3.render('Играть', 1, (0, 255, 0))
     text_width_play = text_play.get_width()
     text_height_play = text_play.get_height()
-    font4 = font.Font(None, int(200/d))
+    font4 = font.SysFont('calibri', int(133/d))
 
     x_c_p = []
     for i in range (int(441/d), text_width_play+int(441/d)):
@@ -198,7 +199,7 @@ while True:
     text_width_help = text_help.get_width()
     text_height_help = text_help.get_height()
 
-    font5 = font.Font(None, int(100/d))
+    font5 = font.SysFont('calibri', int(66/d))
 
     text_genius = font4.render('Открой Помощь.txt гений', 1, (255, 165, 0))
 
