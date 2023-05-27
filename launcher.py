@@ -45,7 +45,7 @@ background = transform.scale(image.load('background.png'), (int(1920/d), int(108
 font2 = font.Font(None, int(36/d))
 
 font3 = font.Font(None, int(80/d))
-text_play_usual = font3.render('Обычный режим', 1, (0, 255, 0))
+text_play_usual = font3.render('Обычный режим', 1, (100, 255, 100))
 text_width_play_usual = text_play_usual.get_width()
 text_height_play_usual = text_play_usual.get_height()
 
@@ -55,6 +55,17 @@ for i in range (int(441/d), text_width_play_usual+int(441/d)):
 y_c_p_u = []
 for i in range (text_height_play_usual):
     y_c_p_u.append(i)
+
+text_play_statistic = font3.render('Статистика', 1, (0, 255, 0))
+text_width_play_statistic = text_play_statistic.get_width()
+text_height_play_statistic = text_play_statistic.get_height()
+
+x_c_p_s = []
+for i in range (int(441/d), text_width_play_usual+int(441/d)):
+    x_c_p_s.append(i)
+y_c_p_s = []
+for i in range (int(100/d), text_height_play_usual + int(100/d)):
+    y_c_p_s.append(i)
 
 text_play = font3.render('Играть!', 1, (255, 165, 0))
 text_width_play = text_play.get_width()
@@ -75,6 +86,8 @@ y_n = -1
 t_m_u = timer()
 music_for_usual.play()
 
+s_a = 0
+
 while True:
     for e in event.get():
         if e.type == QUIT:
@@ -87,7 +100,13 @@ while True:
     if x_n in x_c_p_u and y_n in y_c_p_u:
         text_play_usual = font3.render('Обычный режим', 1, (255, 255, 255))
     else:
-        text_play_usual = font3.render('Обычный режим', 1, (0, 255, 0))
+        text_play_usual = font3.render('Обычный режим', 1, (100, 255, 100))
+    if x in x_c_p_s and y in y_c_p_s and s_a == 0:
+        text_play_statistic = font3.render('Статистика', 1, (0, 255, 0))
+        s_a = 1
+    if x in x_c_p_s and y in y_c_p_s and s_a == 1:
+        text_play_statistic = font3.render('Статистика', 1, (255, 0, 0))
+        s_a = 0
     if x_n in x_c_p and y_n in y_c_p:
         text_play = font3.render('Играть!', 1, (255, 255, 255))
     else:
@@ -110,6 +129,7 @@ while True:
         music_for_usual.play()
     window.blit(background, (0, 0))
     window.blit(text_play_usual, (int(441/d), 0))
+    window.blit(text_play_statistic, (int(441/d), int(100/d)))
     window.blit(text_play, (int(370/d), int(800/d)))
     statistic()
     display.update()
