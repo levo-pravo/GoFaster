@@ -8,8 +8,6 @@ import json
 font.init()
 mixer.init()
 
-print(font.get_fonts())
-
 class GameSprite(sprite.Sprite):
     def __init__(self, player_image, player_x, player_y, player_speed_x, player_speed_y):
         super().__init__()
@@ -127,7 +125,7 @@ def statistic():
         window.blit(text_record_score, (int(10/d), int(350/d)))
     if now_goals > record_goals:
         text_record_goals = font2.render('Рекорд счёт: ' + str(now_goals), 1, (255, 255, 255))
-        window.blit(text_record_goals, (int(10/d), int(400/d)))
+        window.blit(text_record_goals, (int(10/d), int(400/d)         ))
     else:
         text_record_goals = font2.render('Рекорд счёт: ' + str(record_goals), 1, (255, 255, 255))
         window.blit(text_record_goals, (int(10/d), int(400/d)))
@@ -136,16 +134,12 @@ while True:
     #setup
     with open('gamemode.json', 'r', encoding='utf-8') as file:
         gamemode = json.load(file)
+        score = gamemode["score"]
+        goals = gamemode["goals"]
+        record_score = gamemode["record_score"]
+        record_goals = gamemode["record_goals"]
     sound = mixer.Sound("music.ogg")
     looser = mixer.Sound("looser.ogg")
-    with open('score.txt', 'r', encoding='utf-8') as file:
-        score = int(file.read())
-    with open('goal.txt', 'r', encoding='utf-8') as file:
-        goals = int(file.read())
-    with open('record_score.txt', 'r', encoding='utf-8') as file:
-        record_score = int(file.read())
-    with open('record_goal.txt', 'r', encoding='utf-8') as file:
-        record_goals = int(file.read())
     flag_for_score = True #данный флаг показывает, надо ли обнулять ласт тайм
     last_time = timer()
     new_time = timer()
@@ -320,13 +314,11 @@ while True:
         display.update()
         clock.tick(60)
 
-        with open('score.txt', 'w', encoding='utf-8') as file:
-            file.write(str(score))
-        with open('goal.txt', 'w', encoding='utf-8') as file:
-            file.write(str(goals))
-        if now_score > record_score:
-            with open('record_score.txt', 'w', encoding='utf-8') as file:
-                file.write(str(now_score))
-        if now_goals > record_goals:
-            with open('record_goal.txt', 'w', encoding='utf-8') as file:
-                file.write(str(now_goals))
+        gamemode['score'] = score
+        gamemode['goals'] = goals
+        if now_score >= record_score:
+            gamemode['record_score'] = now_score
+        if now_goals >= record_goals:
+            gamemode['record_goals'] = now_goals
+        with open('gamemode.json', 'w', encoding='utf-8') as file:
+            file.write(json.dumps(gamemode))

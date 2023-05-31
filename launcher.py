@@ -29,15 +29,13 @@ def statistic():
 #setup
 with open('gamemode.json', 'r', encoding='utf-8') as file:
     gamemode = json.load(file)
+    score = gamemode["score"]
+    goals = gamemode["goals"]
+    record_score = gamemode["record_score"]
+    record_goals = gamemode["record_goals"]
+gamemode['statistic'] = 1
+
 music_for_usual = mixer.Sound("music.ogg")
-with open('score.txt', 'r', encoding='utf-8') as file:
-    score = int(file.read())
-with open('goal.txt', 'r', encoding='utf-8') as file:
-    goals = int(file.read())
-with open('record_score.txt', 'r', encoding='utf-8') as file:
-    record_score = int(file.read())
-with open('record_goal.txt', 'r', encoding='utf-8') as file:
-    record_goals = int(file.read())
 
 window = display.set_mode((int(1920/d), int(1080/d)))
 display.set_caption('GoFaster!')
