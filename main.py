@@ -1,5 +1,21 @@
 d = 1.6
 
+#the_numbers['']
+the_numbers = {
+    'text_score_x': int(10/d),
+    'text_score_y': int(150//d),
+    'text_goals_x': int(10/d),
+    'text_goals_y': int(200/d),
+    'text_now_score_x': int(10/d),
+    'text_now_score_y': int(250/d),
+    'text_now_goals_x': int(10/d),
+    'text_now_goals_y': int(300/d),
+    'text_record_score_x': int(10/d),
+    'text_record_score_y': int(350/d),
+    'text_record_goals_x': int(10/d),
+    'text_record_goals_y': int(350/d)
+}
+
 import sys
 from time import time as timer, sleep
 from pygame import *
@@ -110,25 +126,25 @@ def statistic():
     global text_record_score
     global text_record_goals
     text_score = font2.render('Общ. время: ' + str(score), 1, (255, 255, 255))
-    window.blit(text_score, (int(10/d), int(150//d)))
+    window.blit(text_score, (the_numbers['text_score_x'], the_numbers['text_score_y']))
     text_goals = font2.render('Общ. счёт: ' + str(goals), 1, (255, 255, 255))
-    window.blit(text_goals, (int(10/d), int(200/d)))
+    window.blit(text_goals, (the_numbers['text_goals_x'], the_numbers['text_goals_y']))
     text_now_score = font2.render('Время: ' + str(now_score), 1, (255, 255, 255))
-    window.blit(text_now_score, (int(10/d), int(250/d)))
+    window.blit(text_now_score, (the_numbers['text_now_score_x'], the_numbers['text_now_score_y']))
     text_now_goals = font2.render('Счёт: ' + str(now_goals), 1, (255, 255, 255))
-    window.blit(text_now_goals, (int(10/d), int(300/d)))
+    window.blit(text_now_goals, (the_numbers['text_now_goals_x'], the_numbers['text_now_goals_y']))
     if now_score > record_score:
         text_record_score = font2.render('Рекорд время: ' + str(now_score), 1, (255, 255, 255))
-        window.blit(text_record_score, (int(10/d), int(350/d)))
+        window.blit(text_record_score, (the_numbers['text_record_score_x'], the_numbers['text_record_score_y']))
     else:
         text_record_score = font2.render('Рекорд время: ' + str(record_score), 1, (255, 255, 255))
-        window.blit(text_record_score, (int(10/d), int(350/d)))
+        window.blit(text_record_score, (the_numbers['text_record_score_x'], the_numbers['text_record_score_y']))
     if now_goals > record_goals:
         text_record_goals = font2.render('Рекорд счёт: ' + str(now_goals), 1, (255, 255, 255))
-        window.blit(text_record_goals, (int(10/d), int(400/d)         ))
+        window.blit(text_record_goals, (the_numbers['text_record_goals_x'], the_numbers['text_record_goals_y']))
     else:
         text_record_goals = font2.render('Рекорд счёт: ' + str(record_goals), 1, (255, 255, 255))
-        window.blit(text_record_goals, (int(10/d), int(400/d)))
+        window.blit(text_record_goals, (the_numbers['text_record_goals_x'], the_numbers['text_record_goals_y']))
 
 while True:
     #setup
