@@ -1,20 +1,6 @@
 d = 1.6
 
-#the_numbers['']
-the_numbers = {
-    'text_score_x': int(10/d),
-    'text_score_y': int(150//d),
-    'text_goals_x': int(10/d),
-    'text_goals_y': int(200/d),
-    'text_now_score_x': int(10/d),
-    'text_now_score_y': int(250/d),
-    'text_now_goals_x': int(10/d),
-    'text_now_goals_y': int(300/d),
-    'text_record_score_x': int(10/d),
-    'text_record_score_y': int(350/d),
-    'text_record_goals_x': int(10/d),
-    'text_record_goals_y': int(350/d)
-}
+from the_numbers import the_numbers
 
 import sys
 from time import time as timer, sleep
@@ -190,37 +176,37 @@ while True:
             line_enemy = Enemy('line_enemy.png', int(-100/d), randint(0, int(920/d)), lx[i], ly[i])     
         line_enemies.add(line_enemy)
 
-    font2 = font.SysFont('calibri', int(30/d))
+    font2 = font.SysFont('calibri', the_numbers['font2'])
 
-    font3 = font.SysFont('calibri', int(300/d))
-    text_play = font3.render('Играть', 1, (0, 255, 0))
+    font3 = font.SysFont('calibri', the_numbers['font3'])
+    text_play = font3.render('Играть', 1, the_numbers['text_play_color'])
     text_width_play = text_play.get_width()
     text_height_play = text_play.get_height()
-    font4 = font.SysFont('calibri', int(133/d))
+    font4 = font.SysFont('calibri', the_numbers['font4'])
 
     x_c_p = []
-    for i in range (int(441/d), text_width_play+int(441/d)):
+    for i in range (the_numbers['text_play_x'], text_width_play+the_numbers['text_play_x']):
         x_c_p.append(i)
     y_c_p = []
-    for i in range (text_height_play):
+    for i in range (the_numbers['text_play_y'], text_height_play+the_numbers['text_play_y']):
         y_c_p.append(i)
 
-    text_help = font3.render('Помощь', 1, (255, 165, 0))
+    text_help = font3.render('Помощь', 1, the_numbers['text_help_color'])
     text_width_help = text_help.get_width()
     text_height_help = text_help.get_height()
 
-    font5 = font.SysFont('calibri', int(66/d))
+    x_c_h = []
+    for i in range (the_numbers['text_help_x'], text_width_help+the_numbers['text_help_x']):
+        x_c_h.append(i)
+    y_c_h = []
+    for i in range (the_numbers['text_help_y'], text_height_help+the_numbers['text_help_y']):
+        y_c_h.append(i)
+
+    font5 = font.SysFont('calibri', the_numbers['font5'])
 
     text_genius = font4.render('Открой Помощь.txt гений', 1, (255, 165, 0))
 
     text_can = font5.render('Попробуй набить ' + str(int(record_score//10)*10 + 10) + ' времени и ' + str(int(record_goals//10)*10 + 10) + ' счёта', 1, (128, 166, 255))
-
-    x_c_h = []
-    for i in range (int(370/d), text_width_help+int(370/d)):
-        x_c_h.append(i)
-    y_c_h = []
-    for i in range (int(800/d), text_height_help+int(800/d)):
-        y_c_h.append(i)
 
     x = -1
     y = -1
@@ -236,13 +222,13 @@ while True:
             if e.type == MOUSEMOTION:
                 x_n, y_n = e.pos
         if x_n in x_c_p and y_n in y_c_p:
-            text_play = font3.render('Играть', 1, (255, 255, 255))
+            text_play = font3.render('Играть', 1, the_numbers['text_play_color_motion'])
         else:
-            text_play = font3.render('Играть', 1, (0, 255, 0))
+            text_play = font3.render('Играть', 1, the_numbers['text_play_color'])
         if x_n in x_c_h and y_n in y_c_h:
-            text_help = font3.render('Помощь', 1, (255, 255, 255))
+            text_help = font3.render('Помощь', 1, the_numbers['text_help_color_motion'])
         else:
-            text_help = font3.render('Помощь', 1, (255, 165, 0))
+            text_help = font3.render('Помощь', 1, the_numbers['text_help_color'])
         if x in x_c_p and y in y_c_p:
             break
         elif x in x_c_h and y in y_c_h:
@@ -252,8 +238,8 @@ while True:
             sleep(3)
             sys.exit()
         window.blit(background, (0, 0))
-        window.blit(text_play, (int(441/d), 0))
-        window.blit(text_help, (int(370/d), int(800/d)))
+        window.blit(text_play, (the_numbers['text_play_x'], the_numbers['text_play_y']))
+        window.blit(text_help, (the_numbers['text_help_x'], the_numbers['text_help_y']))
         window.blit(text_can, (int(370/d), int(600/d)))
         if gamemode['statistic'] == 1:
             statistic()
