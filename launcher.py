@@ -1,5 +1,7 @@
 d = 1.6
 
+from the_numbers import the_numbers
+
 import sys
 import os
 import json
@@ -43,7 +45,7 @@ display.set_icon(transform.scale(image.load('player.png'), (int(1920/d), int(108
 clock = time.Clock()
 background = transform.scale(image.load('background.png'), (int(1920/d), int(1080/d)))
 
-font2 = font.SysFont('calibri', int(36/d))
+font2 = font.SysFont('calibri', the_numbers['font2'])
 
 font3 = font.SysFont('calibri', int(80/d))
 text_play_usual = font3.render('Обычный режим', 1, (100, 255, 100))

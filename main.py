@@ -140,6 +140,7 @@ while True:
         goals = gamemode["goals"]
         record_score = gamemode["record_score"]
         record_goals = gamemode["record_goals"]
+        theme = gamemode['theme']
     sound = mixer.Sound("music.ogg")
     looser = mixer.Sound("looser.ogg")
     flag_for_score = True #данный флаг показывает, надо ли обнулять ласт тайм
@@ -179,7 +180,7 @@ while True:
     font2 = font.SysFont('calibri', the_numbers['font2'])
 
     font3 = font.SysFont('calibri', the_numbers['font3'])
-    text_play = font3.render('Играть', 1, the_numbers['text_play_color'])
+    text_play = font3.render('Играть', 1, the_numbers['text_play_color'][theme])
     text_width_play = text_play.get_width()
     text_height_play = text_play.get_height()
     font4 = font.SysFont('calibri', the_numbers['font4'])
@@ -191,7 +192,7 @@ while True:
     for i in range (the_numbers['text_play_y'], text_height_play+the_numbers['text_play_y']):
         y_c_p.append(i)
 
-    text_help = font3.render('Помощь', 1, the_numbers['text_help_color'])
+    text_help = font3.render('Помощь', 1, the_numbers['text_help_color'][theme])
     text_width_help = text_help.get_width()
     text_height_help = text_help.get_height()
 
@@ -222,13 +223,13 @@ while True:
             if e.type == MOUSEMOTION:
                 x_n, y_n = e.pos
         if x_n in x_c_p and y_n in y_c_p:
-            text_play = font3.render('Играть', 1, the_numbers['text_play_color_motion'])
+            text_play = font3.render('Играть', 1, the_numbers['text_play_color_motion'][theme])
         else:
-            text_play = font3.render('Играть', 1, the_numbers['text_play_color'])
+            text_play = font3.render('Играть', 1, the_numbers['text_play_color'][theme])
         if x_n in x_c_h and y_n in y_c_h:
-            text_help = font3.render('Помощь', 1, the_numbers['text_help_color_motion'])
+            text_help = font3.render('Помощь', 1, the_numbers['text_help_color_motion'][theme])
         else:
-            text_help = font3.render('Помощь', 1, the_numbers['text_help_color'])
+            text_help = font3.render('Помощь', 1, the_numbers['text_help_color'][theme])
         if x in x_c_p and y in y_c_p:
             break
         elif x in x_c_h and y in y_c_h:
