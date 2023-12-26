@@ -16,7 +16,7 @@
 
 ---
 
-__Welcome__ to a game called __GoFaster!__
+__Welcome__ to the game called __GoFaster!__
 
 There is only one thing to do here - to dodge evil ones.
 
